@@ -5,9 +5,12 @@
 #ifndef SCHEDULER_SIMULATION_SCHEDULER_H
 #define SCHEDULER_SIMULATION_SCHEDULER_H
 
+#include "Process.h"
 
 class Scheduler {
-
+public:
+    virtual Process getNextProcess() = 0;
+    virtual void addProcess(Process process) = 0;
 };
 
 
