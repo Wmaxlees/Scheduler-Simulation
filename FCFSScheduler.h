@@ -6,19 +6,19 @@
 #define SCHEDULER_SIMULATION_FCFSSCHEDULER_H
 
 #include "Scheduler.h"
-#include "Queue.h"
+#include "Collections/Queue.h"
 
 class FCFSScheduler : public Scheduler {
 public:
     // Constructor
-    FCFSScheduler();
+    explicit FCFSScheduler(unsigned int size);
 
     // Implementations of Scheduler functions
     Process getNextProcess();
     void addProcess(Process process);
 
 private:
-    Queue m_Queue;
+    Queue       m_Queue;
 };
 
 

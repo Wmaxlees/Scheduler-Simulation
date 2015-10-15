@@ -5,7 +5,7 @@
 #include "FCFSScheduler.h"
 
 // Constructor
-FCFSScheduler::FCFSScheduler() : m_Queue(100) {
+FCFSScheduler::FCFSScheduler(unsigned int size) : m_Queue(size) {
 
 }
 

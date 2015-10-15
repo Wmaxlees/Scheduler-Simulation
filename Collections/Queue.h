@@ -7,7 +7,7 @@
 
 #include <ostream>
 
-#include "Process.h"
+#include "../Process.h"
 
 class Queue {
 public:

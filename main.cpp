@@ -1,11 +1,9 @@
 #include <iostream>
 
-#include "Queue.h"
-
-using namespace std;
-
-int main() {
-
+int main(int argc, char** argv) {
+    for (unsigned short i = 0; i < argc; ++i) {
+        std::cout << argv[i] << std::endl;
+    }
 
     return 0;
 }
