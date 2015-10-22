@@ -8,6 +8,7 @@
 #include <ostream>
 
 #include "../Process.h"
+#include "Queue.h"
 
 
 class PriorityQueue {
@@ -29,6 +30,10 @@ public:
 
     // Add a process to the end of the queue
     void push(Process process, unsigned int priority);
+
+    unsigned int getSize() {
+        return m_Back;
+    }
 
     friend std::ostream& operator<<(std::ostream& os, const PriorityQueue& queue);
     friend unsigned int getIndex(unsigned int priority, const PriorityQueue& queue);

@@ -11,7 +11,7 @@ RRScheduler::RRScheduler(unsigned int size, unsigned int sliceSize) : m_Queue(si
 
 // Implementations of Scheduler functions
 Process RRScheduler::getNextProcess() {
-    this->m_CurrentProcess = this->m_Queue.pop();
+    return this->m_Queue.pop();
 }
 
 void RRScheduler::addProcess(Process process) {

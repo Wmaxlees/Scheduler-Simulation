@@ -26,7 +26,7 @@ Queue::Queue(unsigned int size) {
 
 Queue::~Queue() {
     // Release the queue array pointer
-    if (this->m_pProcessQueue == nullptr) {
+    if (this->m_pProcessQueue != nullptr) {
         delete [] this->m_pProcessQueue;
         this->m_pProcessQueue = nullptr;
     }
@@ -79,7 +79,7 @@ std::ostream& operator<<(std::ostream& os, const Queue& queue)
             (queue.m_Back == queue.m_Front && queue.m_Full == false)) {
             os << "[x]";
         } else {
-            os << "[" << queue.m_pProcessQueue[i].getPID() << "]";
+            os << "[" << queue.m_pProcessQueue[i].getM_PID() << "]";
         }
     }
 

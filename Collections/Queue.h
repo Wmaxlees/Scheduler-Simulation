@@ -23,6 +23,14 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Queue& queue);
 
+    unsigned int getSize() {
+        if (this->m_Front >= this->m_Back) {
+            return this->m_Front - this->m_Back;
+        } else {
+            return this->m_Front + (this->m_Size - this->m_Back);
+        }
+    }
+
 private:
     Process         *m_pProcessQueue;
     unsigned  int    m_Size;

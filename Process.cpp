@@ -4,27 +4,20 @@
 
 #include "Process.h"
 
+#include <iomanip>
 
-unsigned int Process::getPID() const {
-    return m_PID;
-}
+std::ostream& operator<<(std::ostream& os, const Process& process) {
+    os << std::setw(20) << std::left << "PID" << process.getM_PID() << '\n' <<
+    std::setw(20) << "Arrival" << process.getM_ArrivalTime() << '\n' <<
+    std::setw(20) << "CPU Burst" << process.getM_BurstTime() << '\n' <<
+    std::setw(20) << "Start Time" << process.getM_StartTime() << '\n' <<
+    std::setw(20) << "Last Seen" << process.getM_LastSeen() << '\n' <<
+    std::setw(20) << "Remaining" << process.getM_RemainingTime() << '\n' <<
+    std::setw(20) << "Finish" << process.getM_FinishTime() << '\n' <<
+    std::setw(20) << "Waiting Time" << process.getM_WaitTime() << '\n' <<
+    std::setw(20) << "Turn Around" << process.getM_TurnaroundTime() << '\n' <<
+    std::setw(20) << "Response Time" << process.getM_ResponseTime() << '\n' <<
+    std::setw(20) << "Context Switches" << process.getM_ContextSwitch() << std::right << std::endl;
 
-void Process::setPID(unsigned int PID) {
-    Process::m_PID = PID;
-}
-
-unsigned int Process::getArrivalTime() const {
-    return m_ArrivalTime;
-}
-
-void Process::setArrivalTime(unsigned int arrivalTime) {
-    Process::m_ArrivalTime = arrivalTime;
-}
-
-unsigned int Process::getBurstTime() const {
-    return m_BurstTime;
-}
-
-void Process::setBurstTime(unsigned int burstTime) {
-    Process::m_BurstTime = burstTime;
+    return os;
 }
