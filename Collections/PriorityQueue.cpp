@@ -17,7 +17,7 @@ PriorityQueue::PriorityQueue(unsigned int size) {
 
 PriorityQueue::~PriorityQueue() {
     if (this->m_pProcessQueue != nullptr) {
-        delete [] this->m_pProcessQueue;
+        delete[] this->m_pProcessQueue;
         this->m_pProcessQueue = nullptr;
     }
 }
@@ -134,7 +134,7 @@ std::ostream& operator<<(std::ostream& os, const PriorityQueue& queue) {
         if (i < queue.m_Back) {
             os << "[" << queue.m_pProcessQueue[i].process.getM_PID() << ">" << queue.m_pProcessQueue[i].priority << "]";
         } else {
-            os << "[x]";
+            os << "[ x ]";
         }
     }
 

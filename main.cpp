@@ -7,11 +7,11 @@
 
 #define             MAX_FILE_SIZE           12
 
-void runRR(Queue queue, unsigned short quantumSize);
-void runSRFT(PriorityQueue queue);
+void runRR(Queue &queue, unsigned short quantumSize);
+void runSRFT(PriorityQueue &queue);
 void loadQueue(Queue &queue, std::fstream &file);
 void loadPriorityQueue(PriorityQueue &queue, std::fstream &file);
-void printResults(PriorityQueue queue);
+void printResults(PriorityQueue &queue);
 
 enum Algorithm {
     FCFS = 0,
@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-void runRR(Queue queue, unsigned short quantumSize) {
+void runRR(Queue &queue, unsigned short quantumSize) {
     unsigned long runtime = 0;
     PriorityQueue finishedQueue(MAX_FILE_SIZE);
 
@@ -151,8 +151,85 @@ void runRR(Queue queue, unsigned short quantumSize) {
     printResults(finishedQueue);
 }
 
-void runSRFT(PriorityQueue queue) {
+void runSRFT(PriorityQueue &queue) {
+    unsigned long runtime = 0;
+    PriorityQueue finishedQueue(MAX_FILE_SIZE);
+    PriorityQueue runningQueue(MAX_FILE_SIZE);
+    unsigned int previousPID = 0;
 
+    // std::cout << "SRTF" << std::endl;
+
+    while (queue.getSize() > 0 || runningQueue.getSize() > 0) {
+        // std::cout << "Waiting Queue: " << queue <<
+        //         "Running Queue: " << runningQueue << std::endl;
+
+        // Find the correct process to run
+        Process process;
+        if (queue.getSize() > 0) {
+            Process process = queue.peek();
+
+            if (process.getM_ArrivalTime() <= runtime) {
+                process = queue.pop();
+                runningQueue.push(process, process.getM_RemainingTime());
+            }
+        }
+
+        if (runningQueue.getSize() > 0) {
+            process = runningQueue.pop();
+
+            // Check context switches
+            if (previousPID != process.getM_PID() && process.getM_RemainingTime() != process.getM_BurstTime()) {
+                process.setM_ContextSwitch(process.getM_ContextSwitch() + 1);
+            }
+
+            // std::cout << "Process\n" << process << std::endl;
+
+            process.setM_WaitTime(process.getM_WaitTime() + (runtime - process.getM_LastSeen()));
+
+            // Set start time if needed
+            if (process.getM_LastSeen() == 0) {
+                // std::cout << "First time run\nSetting start time to: " << runtime << std::endl;
+                process.setM_StartTime(runtime);
+
+                // std::cout << "Start Time: " << process.getM_StartTime() << "\n";
+                // std::cout << "Arrival Time: " << process.getM_ArrivalTime() << std::endl;
+                process.setM_ResponseTime(process.getM_StartTime() - process.getM_ArrivalTime());
+            }
+
+            // Check whether process will finish this tick or not
+            unsigned int remaining = process.getM_RemainingTime();
+            if (--remaining > 0) {
+                // Decrement the remaining time and send it back to the queue
+                process.setM_RemainingTime(remaining);
+                process.setM_LastSeen(runtime);
+
+                ++runtime;
+
+                runningQueue.push(process, process.getM_RemainingTime());
+            } else {
+                // std::cout << "Process is finished" << std::endl;
+
+                // Close out the process
+                ++runtime;
+
+                process.setM_FinishTime(runtime);
+                process.setM_TurnaroundTime(runtime - process.getM_ArrivalTime());
+                process.setM_WaitTime(
+                        process.getM_FinishTime() - process.getM_ArrivalTime() - process.getM_BurstTime());
+
+                finishedQueue.push(process, process.getM_PID());
+            }
+
+            previousPID = process.getM_PID();
+        } else {
+            ++runtime;
+        }
+    }
+
+    // std::cout << "Finished" << std::endl;
+
+    // Print the results
+    printResults(finishedQueue);
 }
 
 void loadQueue(Queue &queue, std::fstream &file) {
@@ -175,11 +252,11 @@ void loadPriorityQueue(PriorityQueue &queue, std::fstream &file) {
         process.setM_ArrivalTime(arrivalTime);
         process.setM_BurstTime(burstTime);
 
-        queue.push(process, burstTime);
+        queue.push(process, arrivalTime);
     }
 }
 
-void printResults(PriorityQueue queue) {
+void printResults(PriorityQueue &queue) {
     unsigned int    waitAvg = 0, turnAroundAvg = 0, respAvg = 0, switchAvg = 0;
     unsigned int    size = queue.getSize();
 

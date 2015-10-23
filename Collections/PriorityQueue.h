@@ -27,6 +27,9 @@ public:
 
     // Remove the process from the front of the queue and return it
     Process pop();
+    const Process &peek() {
+        return (*m_pProcessQueue).process;
+    }
 
     // Add a process to the end of the queue
     void push(Process process, unsigned int priority);

@@ -77,7 +77,7 @@ std::ostream& operator<<(std::ostream& os, const Queue& queue)
         if ((queue.m_Back > queue.m_Front && i < queue.m_Back && i >= queue.m_Front) ||
             (queue.m_Back < queue.m_Front && (i < queue.m_Back || i >= queue.m_Front)) ||
             (queue.m_Back == queue.m_Front && queue.m_Full == false)) {
-            os << "[x]";
+            os << "[ x ]";
         } else {
             os << "[" << queue.m_pProcessQueue[i].getM_PID() << "]";
         }
